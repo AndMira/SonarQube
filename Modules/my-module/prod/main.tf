@@ -1,6 +1,15 @@
-provider aws {
-    region = var.region
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 6.11.0"  # or whichever version you use
+    }
+  }
 }
+provider "aws" {
+  region = var.region
+}
+
 
 module vpc {
     source = "../vpc"
@@ -10,6 +19,10 @@ module vpc {
     subnet3_cidr = "10.0.3.0/24"
     environment = "prod"
     region = var.region
+
+    providers = {
+    aws = aws
+  }
 }
 
 
@@ -22,6 +35,10 @@ module "sg" {
   source = "../sg"
   vpc_id = module.vpc.vpc_id
   port   = [22, 80, 443, 9000]
+
+  providers = {
+    aws = aws
+  }
 }
   
 
@@ -34,6 +51,10 @@ module "ec2" {
   subnet_id     = module.vpc.public_subnet_ids[0]
   sg_id         = module.sg.sg_id             # pass SG ID from SG module
   key_name      = "ubuntu-key"
+
+  providers = {
+    aws = aws
+  }
 }
 
 output "ec2_ip" {

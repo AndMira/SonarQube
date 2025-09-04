@@ -1,3 +1,13 @@
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 6.11.0"
+    }
+  }
+}
+  
+  
 resource "aws_instance" "web" {
   ami                    = var.ami_id
   key_name               = var.key_name
@@ -17,5 +27,14 @@ variable "key_name" {}
 
 output "public_ip" {
   value = aws_instance.web.public_ip
+  
 }
+
+
+
+data "aws_subnet" "subnet" {
+  id = var.subnet_id
+}
+
+
 

@@ -1,3 +1,13 @@
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 6.11.0"
+    }
+  }
+}
+
+
 resource "aws_vpc" "main" {
   cidr_block = var.vpc_cidr
 
@@ -63,6 +73,7 @@ resource "aws_route_table" "example" {
 resource "aws_route_table_association" "a" {
   subnet_id      = aws_subnet.main.id
   route_table_id = aws_route_table.example.id
+
 }
 
 resource "aws_route_table_association" "b" {
@@ -81,14 +92,15 @@ variable "vpc_cidr" {}
 variable "subnet1_cidr" {}
 variable "subnet2_cidr" {}
 variable "subnet3_cidr" {}
-variable environment {}
+variable "environment" {}
 variable "ip_on_launch" {
   type    = bool
   default = true
 }
 
-
-
+output "vpc_id" {
+  value = aws_vpc.main.id
+}
 
 output "public_subnet_ids" {
   value = [
@@ -98,6 +110,3 @@ output "public_subnet_ids" {
   ]
 }
 
-output "vpc_id" {
-  value = aws_vpc.main.id
-}
