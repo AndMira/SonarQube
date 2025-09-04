@@ -7,6 +7,7 @@ terraform {
   }
 }
   
+
   
 resource "aws_instance" "web" {
   ami                    = var.ami_id
@@ -14,6 +15,9 @@ resource "aws_instance" "web" {
   instance_type          = var.instance_type
   subnet_id              = var.subnet_id
   vpc_security_group_ids = [var.sg_id]
+  tags = {
+    Name = var.name
+  }
 
 }
 
@@ -24,6 +28,7 @@ variable "instance_type" {}
 variable "subnet_id" {}
 variable "sg_id" {}
 variable "key_name" {}
+variable "name"{}
 
 output "public_ip" {
   value = aws_instance.web.public_ip

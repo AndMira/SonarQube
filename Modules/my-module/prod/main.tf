@@ -19,6 +19,7 @@ module vpc {
     subnet3_cidr = "10.0.3.0/24"
     environment = "prod"
     region = var.region
+    
 
     providers = {
     aws = aws
@@ -51,6 +52,7 @@ module "ec2" {
   subnet_id     = module.vpc.public_subnet_ids[0]
   sg_id         = module.sg.sg_id             # pass SG ID from SG module
   key_name      = "ubuntu-key"
+  name          = "SonarQube"
 
   providers = {
     aws = aws
