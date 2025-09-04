@@ -48,7 +48,7 @@ module "sg" {
 module "ec2" {
  source        = "../ec2"
  ami_id        = "ami-0360c520857e3138f"
-  instance_type = "t3.micro"
+  instance_type = "t2.medium"
   subnet_id     = module.vpc.public_subnet_ids[0]
   sg_id         = module.sg.sg_id             # pass SG ID from SG module
   key_name      = "ubuntu-key"
